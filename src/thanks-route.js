@@ -26,7 +26,11 @@ const onErr = (err, res) => {
 const onCommand = (req, c, res, thanker) => {
   logger.info(`thanks command found: ${JSON.stringify(c)}`)
 
-  return thanker(c)
+  const sendResult = thanker(c)
+  logger.info(sendResult)
+  logger.info('after sending')
+
+  return sendResult
     .then(x => res.json(responseMapper.forCommand(c)))
     .catch(err => {
       logger.error(`oh! oh! ${JSON.stringify(err)}`)
