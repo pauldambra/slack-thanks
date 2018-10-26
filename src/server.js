@@ -13,7 +13,7 @@ if (!channel) {
   throw new Error('you must set the SLACK_CHANNEL environment variable')
 }
 
-const webhookUrl = process.env.SLACK_WEBHHOK
+const webhookUrl = process.env.SLACK_WEBHOOK
 if (!webhookUrl) {
   throw new Error('you must provide a webhook url')
 }
