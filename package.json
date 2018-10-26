@@ -11,7 +11,8 @@
   "license": "CC-BY-SA-4.0",
   "dependencies": {
     "express": "^4.16.2",
-    "heroku-logger": "^0.3.0"
+    "heroku-logger": "^0.3.0",
+    "superagent": "^4.0.0-beta.5"
   },
   "devDependencies": {
     "chai": "^4.1.2",

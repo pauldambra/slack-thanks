@@ -13,7 +13,12 @@ if (!channel) {
   throw new Error('you must set the SLACK_CHANNEL environment variable')
 }
 
-const app = appFactory(port, token, channel)
+const webhookUrl = process.env.SLACK_WEBHHOK
+if (!webhookUrl) {
+  throw new Error('you must provide a webhook url')
+}
+
+const app = appFactory(port, token, channel, webhookUrl)
 
 app.listen(
   port,
