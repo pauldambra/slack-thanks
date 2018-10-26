@@ -1,6 +1,6 @@
 
 module.exports = {
-  forCommand: c => {
+  onSuccess: c => {
     const m = {
       response_type: 'ephemeral',
       text: `I've thanked ${c.name} for you`

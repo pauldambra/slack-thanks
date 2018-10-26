@@ -2,36 +2,16 @@ const logger = require('heroku-logger')
 const responseMapper = require('./response-mapper')
 const parseCommand = require('./parse-command')
 const thanksFilters = require('./thanks-filters.js')
+const errorMapper = require('./errors/error-mapper.js')
 
-const onErr = (err, res) => {
-  logger.error(err)
-  logger.error(`thanks command not valid: ${err.name}`)
-
-  let text = 'unknown error'
-  switch (err.name) {
-    case 'NoRecipientProvided':
-      text = 'you need to @ mention the person you\'re thanking before saying why'
-      break
-    case 'NoReasonProvided':
-      text = 'you need to say why you\'re thanking someone'
-      break
-    default:
-      text = `I don't know what '${err.commandText}' means :(`
-  }
-
-  return res.json({
-    response_type: 'ephemeral',
-    text
-  })
-}
-
-const onCommand = (req, c, res, thanker) => {
+const thankAndRespond = (c, res, thanker) => {
   logger.info(`thanks command found: ${JSON.stringify(c)}`)
 
   return thanker(c)
-    .then(x => res.json(responseMapper.forCommand(c)))
+    .then(x => res.json(responseMapper.onSuccess(c)))
     .catch(err => {
       logger.error(`oh! oh! ${JSON.stringify(err)}`)
+      errorMapper.onErr(err, res)
     })
 }
 
@@ -39,8 +19,8 @@ const postThankyou = (channel, thanker) => {
   return (req, res) => {
     logger.info('handling thankyou request')
     parseCommand(req.body.text)
-      .then(command => onCommand(req, command, res, thanker))
-      .catch(err => onErr(err, res))
+      .then(command => thankAndRespond(command, res, thanker))
+      .catch(err => errorMapper.onErr(err, res))
   }
 }
 
