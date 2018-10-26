@@ -2,7 +2,7 @@
 module.exports = {
   forCommand: c => {
     const m = {
-      response_type: 'in_channel',
+      response_type: 'ephemeral',
       text: `I've thanked ${c.recipient.replace('@', '')} for you`
     }
     if (c.description && c.description.length > 0) {
@@ -12,12 +12,12 @@ module.exports = {
   },
   forHelp: () => {
     const m = {
-      response_type: 'in_channel',
+      response_type: 'ephemeral',
       text: `the thanks command lets you thanks a colleague for something`
     }
 
     m.attachments = [
-      { text: `try /wat thanks @pauldambra for telling me an anecdote or /thanks @santa for my new bike` }
+      { text: `try /thanks @pauldambra for telling me an anecdote or /thanks @santa for my new bike` }
     ]
 
     return m
