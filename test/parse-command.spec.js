@@ -38,9 +38,10 @@ describe('parsing the received command', () => {
   })
 
   it('can parse an expected command', async () => {
-    const result = await parseCommand('<@U1234|user> for telling an anecdote')
+    const result = await parseCommand('<@U1234|donna> for telling an anecdote')
 
     expect(result.recipient).to.equal('@U1234')
+    expect(result.name).to.equal('donna')
     expect(result.reason).to.equal('telling an anecdote')
   })
 })

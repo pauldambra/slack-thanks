@@ -13,7 +13,7 @@ describe('the server', function () {
   it('can respond to a thanks command', function (done) {
     request(app)
       .post('/thanks')
-      .send('text=<@U1234|user> for telling me an anecdote')
+      .send('text=<@U1234|tommy> for telling me an anecdote')
       .send('token=test')
       .expect('Content-Type', /json/)
       .expect(200)
@@ -24,7 +24,7 @@ describe('the server', function () {
         expect(res.body).to.eql(
           {
             'response_type': 'ephemeral',
-            'text': `I've thanked <@U1234> for you`
+            'text': `I've thanked tommy for you`
           })
         done()
       })
@@ -33,7 +33,7 @@ describe('the server', function () {
   it('can respond to a different thanks command', function (done) {
     request(app)
       .post('/thanks')
-      .send('text=<@U1234|user> for my new bike')
+      .send('text=<@U1234|santa> for my new bike')
       .send('token=test')
       .expect('Content-Type', /json/)
       .expect(200)
@@ -44,7 +44,7 @@ describe('the server', function () {
         expect(res.body).to.eql(
           {
             'response_type': 'ephemeral',
-            'text': `I've thanked <@U1234> for you`
+            'text': `I've thanked santa for you`
           })
         done()
       })

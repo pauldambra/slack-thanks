@@ -14,7 +14,7 @@ describe('the integration', function () {
   it('can tell you when it has succeeded', function (done) {
     request(app)
       .post('/thanks')
-      .send('text=<@U1234|user> for telling an anecdote')
+      .send('text=<@U1234|santa> for telling an anecdote')
       .send('token=test')
       .expect('Content-Type', /json/)
       .expect(200)
@@ -25,7 +25,7 @@ describe('the integration', function () {
         expect(res.body).to.eql(
           {
             'response_type': 'ephemeral',
-            'text': `I've thanked <@U1234> for you`
+            'text': `I've thanked santa for you`
           })
         done()
       })

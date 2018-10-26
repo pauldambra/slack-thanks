@@ -13,8 +13,13 @@ const matchReason = command => {
 }
 
 const matchRecipient = command => {
-  const recipient = tryMatch(command, /^<@U\d+|user>\s*/)
-  return recipient && recipient.replace('|user', '').replace('<@', '@')
+  const recipient = tryMatch(command, /^<@U\w+|/)
+  return recipient && recipient.replace('|', '').replace('<@', '@')
+}
+
+const matchName = command => {
+  const recipient = tryMatch(command, /\|\w+>/)
+  return recipient && recipient.replace('|', '').replace('>', '')
 }
 
 const identifyError = (command, reason, recipient) => {
@@ -32,11 +37,13 @@ const identifyError = (command, reason, recipient) => {
 module.exports = command => {
   return new Promise((resolve, reject) => {
     const recipient = matchRecipient(command)
+    const name = matchName(command)
     const reason = matchReason(command)
 
     if (recipient && reason) {
       resolve({
         recipient,
+        name,
         reason
       })
     }
