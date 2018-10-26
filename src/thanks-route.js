@@ -3,6 +3,7 @@ const responseMapper = require('./response-mapper')
 const parseCommand = require('./parse-command')
 
 const onErr = (err, res) => {
+  logger.error(err)
   logger.error(`thanks command not valid: ${err.name}`)
 
   let text = 'unknown error'
