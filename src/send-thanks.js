@@ -1,11 +1,12 @@
 const request = require('superagent')
+const logger = require('heroku-logger')
 
 module.exports = (responseUrl) => (command) => {
-  console.log(responseUrl, 'ru')
+  logger.info(`response url set to ${responseUrl}: processing ${command}`)
   return request
     .post(responseUrl)
     .set('Content-type', 'application/json')
     .send({
-      text: `someone wants to thank ${command.recipient} for ${command.reason}`
+      text: `someone wants to thank <${command.recipient}> for ${command.reason}`
     })
 }
