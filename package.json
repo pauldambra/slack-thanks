@@ -1,0 +1,27 @@
+{
+  "name": "slack-thanks",
+  "version": "0.0.0",
+  "description": "let's you thank yor colleagues in slack",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx standard && npx mocha",
+    "start": "node ./src/server.js"
+  },
+  "author": "Paul D'Ambra",
+  "license": "CC-BY-SA-4.0",
+  "dependencies": {
+    "express": "^4.16.2",
+    "heroku-logger": "^0.3.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.0.0",
+    "standard": "^10.0.3",
+    "supertest": "^3.0.0"
+  },
+  "standard": {
+    "env": [
+      "mocha"
+    ]
+  }
+}
