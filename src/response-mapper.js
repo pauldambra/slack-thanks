@@ -21,5 +21,24 @@ module.exports = {
     ]
 
     return m
+  },
+  onNoToken: res => {
+    res.statusCode = 400
+    return res.json({
+      errors: [{
+        code: 2,
+        message: 'You must send a slack token'
+      }]
+    })
+  },
+  onWrongToken: res => {
+    res.statusCode = 401
+    return res.end()
+  },
+  onNoText: res => {
+    return res.json({
+      response_type: 'ephemeral',
+      text: `Something went wrong trying to understand that :(`
+    })
   }
 }
