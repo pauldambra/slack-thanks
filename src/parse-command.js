@@ -4,14 +4,17 @@ const InvalidCommandProvided = require('./errors/InvalidCommandProvided.js')
 
 const tryMatch = (command, pattern) => {
   const match = command.match(pattern)
-  if (match) {
-    return match[0].trim()
-  }
+  return match && match[0].trim()
 }
 
 const matchReason = command => {
   const reason = tryMatch(command, /for .*/)
   return reason && reason.replace('for ', '')
+}
+
+const matchRecipient = command => {
+  const recipient = tryMatch(command, /^<@U\d+|user>\s*/)
+  return recipient && recipient.replace('|user', '').replace('<@', '@')
 }
 
 const identifyError = (command, reason, recipient) => {
@@ -28,7 +31,7 @@ const identifyError = (command, reason, recipient) => {
 
 module.exports = command => {
   return new Promise((resolve, reject) => {
-    const recipient = tryMatch(command, /^@\w+\s*/)
+    const recipient = matchRecipient(command)
     const reason = matchReason(command)
 
     if (recipient && reason) {

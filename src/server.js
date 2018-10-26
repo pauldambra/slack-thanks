@@ -1,5 +1,6 @@
 const appFactory = require('./app-factory')
 const logger = require('heroku-logger')
+const sendThanks = require('./send-thanks.js')
 
 const port = process.env.PORT || 3000
 
@@ -18,7 +19,8 @@ if (!webhookUrl) {
   throw new Error('you must provide a webhook url')
 }
 
-const app = appFactory(port, token, channel, webhookUrl)
+const thanker = sendThanks(webhookUrl)
+const app = appFactory(port, token, channel, webhookUrl, thanker)
 
 app.listen(
   port,

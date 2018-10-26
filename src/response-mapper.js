@@ -3,7 +3,7 @@ module.exports = {
   forCommand: c => {
     const m = {
       response_type: 'ephemeral',
-      text: `I've thanked ${c.recipient.replace('@', '')} for you`
+      text: `I've thanked <${c.recipient}> for you`
     }
     if (c.description && c.description.length > 0) {
       m.attachments = c.description.map(d => ({ text: d }))

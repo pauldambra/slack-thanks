@@ -1,7 +1,6 @@
 const logger = require('heroku-logger')
 const responseMapper = require('./response-mapper')
 const parseCommand = require('./parse-command')
-const sendThanks = require('./send-thanks')
 
 const onErr = (err, res) => {
   logger.error(`thanks command not valid: ${err.name}`)
@@ -24,21 +23,21 @@ const onErr = (err, res) => {
   })
 }
 
-const onCommand = (req, c, res, webhookUrl) => {
+const onCommand = (req, c, res, thanker) => {
   logger.info(`thanks command found: ${JSON.stringify(c)}`)
 
-  return sendThanks(webhookUrl, c)
+  return thanker(c)
     .then(x => res.json(responseMapper.forCommand(c)))
     .catch(err => {
       logger.error(`oh! oh! ${JSON.stringify(err)}`)
     })
 }
 
-const postThankyou = (channel, webhookUrl) => {
+const postThankyou = (channel, thanker) => {
   return (req, res) => {
     logger.info('handling thankyou request')
     parseCommand(req.body.text)
-      .then(command => onCommand(req, command, res, webhookUrl))
+      .then(command => onCommand(req, command, res, thanker))
       .catch(err => onErr(err, res))
   }
 }
@@ -102,12 +101,12 @@ const sendHelpIfNeeded = (req, res, next) => {
 }
 
 module.exports = {
-  register: (app, slackVerificationToken, channel, webhookUrl) => {
+  register: (app, slackVerificationToken, channel, thanker) => {
     app.use('/thanks', ensureBodyHasTextInRequest)
     app.use('/thanks', ensureTokenIsPresent)
     app.use('/thanks', ensureVerificationIsValid(slackVerificationToken))
 
     app.post('/thanks', sendHelpIfNeeded)
-    app.post('/thanks', postThankyou(channel, webhookUrl))
+    app.post('/thanks', postThankyou(channel, thanker))
   }
 }

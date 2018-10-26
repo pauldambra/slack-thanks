@@ -5,15 +5,15 @@ const expect = chai.expect
 
 describe('the server', function () {
   let app
-
+  const nullThanker = () => Promise.resolve()
   beforeEach(function () {
-    app = appFactory(1337, 'test', '#thanks')
+    app = appFactory(1337, 'test', '#thanks', nullThanker)
   })
 
   it('can respond to a thanks command', function (done) {
     request(app)
       .post('/thanks')
-      .send('text=@pauldambra for telling me an anecdote')
+      .send('text=<@U1234|user> for telling me an anecdote')
       .send('token=test')
       .expect('Content-Type', /json/)
       .expect(200)
@@ -23,8 +23,8 @@ describe('the server', function () {
         }
         expect(res.body).to.eql(
           {
-            'response_type': 'in_channel',
-            'text': `I've thanked pauldambra for you`
+            'response_type': 'ephemeral',
+            'text': `I've thanked <@U1234> for you`
           })
         done()
       })
@@ -33,7 +33,7 @@ describe('the server', function () {
   it('can respond to a different thanks command', function (done) {
     request(app)
       .post('/thanks')
-      .send('text=@santa for my new bike')
+      .send('text=<@U1234|user> for my new bike')
       .send('token=test')
       .expect('Content-Type', /json/)
       .expect(200)
@@ -43,8 +43,8 @@ describe('the server', function () {
         }
         expect(res.body).to.eql(
           {
-            'response_type': 'in_channel',
-            'text': `I've thanked santa for you`
+            'response_type': 'ephemeral',
+            'text': `I've thanked <@U1234> for you`
           })
         done()
       })
@@ -92,7 +92,7 @@ describe('the server', function () {
   it('can tell you when you don\'t say why', function (done) {
     request(app)
       .post('/thanks')
-      .send('text=@santa')
+      .send('text=<@U1234|user>')
       .send('token=test')
       .expect('Content-Type', /json/)
       .expect(200)

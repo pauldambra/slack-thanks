@@ -7,13 +7,14 @@ describe('the integration', function () {
   let app
 
   beforeEach(function () {
-    app = appFactory(1337, 'test', '#thanks')
+    const nullThanker = () => Promise.resolve()
+    app = appFactory(1337, 'test', '#thanks', nullThanker)
   })
 
   it('can tell you when it has succeeded', function (done) {
     request(app)
       .post('/thanks')
-      .send('text=@pauldambra for telling an anecdote')
+      .send('text=<@U1234|user> for telling an anecdote')
       .send('token=test')
       .expect('Content-Type', /json/)
       .expect(200)
@@ -23,8 +24,8 @@ describe('the integration', function () {
         }
         expect(res.body).to.eql(
           {
-            'response_type': 'in_channel',
-            'text': `I've thanked pauldambra for you`
+            'response_type': 'ephemeral',
+            'text': `I've thanked <@U1234> for you`
           })
         done()
       })

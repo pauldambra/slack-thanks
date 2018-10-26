@@ -17,7 +17,7 @@ describe('parsing the received command', () => {
     })
 
     it('can tell you when there is no reason', (done) => {
-      parseCommand('@pauldambra')
+      parseCommand('<@U1234|user>')
         .then(x => done('fail! should not get here'))
         .catch(err => {
           expect(err).to.exist
@@ -38,9 +38,9 @@ describe('parsing the received command', () => {
   })
 
   it('can parse an expected command', async () => {
-    const result = await parseCommand('@pauldambra for telling an anecdote')
+    const result = await parseCommand('<@U1234|user> for telling an anecdote')
 
-    expect(result.recipient).to.equal('@pauldambra')
+    expect(result.recipient).to.equal('@U1234')
     expect(result.reason).to.equal('telling an anecdote')
   })
 })

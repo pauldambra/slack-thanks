@@ -1,6 +1,7 @@
 const request = require('superagent')
 
-module.exports = (responseUrl, command) => {
+module.exports = (responseUrl) => (command) => {
+  console.log(responseUrl, 'ru')
   return request
     .post(responseUrl)
     .set('Content-type', 'application/json')
