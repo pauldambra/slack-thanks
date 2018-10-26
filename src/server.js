@@ -20,7 +20,7 @@ if (!webhookUrl) {
 }
 
 const thanker = sendThanks(webhookUrl)
-const app = appFactory(port, token, channel, webhookUrl, thanker)
+const app = appFactory(port, token, channel, thanker)
 
 app.listen(
   port,
